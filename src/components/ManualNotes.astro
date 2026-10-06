@@ -1,0 +1,18 @@
+---
+/**
+ * Renders the hand-written notes for a generated page, if there are any:
+ * src/content/notes/<lang>/<slug>.md. Generated pages include this component, so the
+ * automation can rewrite them without ever touching what people wrote.
+ */
+import { getEntry, render } from 'astro:content';
+
+interface Props {
+	slug: string;
+}
+
+const lang = Astro.locals.starlightRoute?.lang ?? 'en';
+const entry = await getEntry('notes', `${lang}/${Astro.props.slug}`);
+const Content = entry ? (await render(entry)).Content : null;
+---
+
+{Content && <Content />}
